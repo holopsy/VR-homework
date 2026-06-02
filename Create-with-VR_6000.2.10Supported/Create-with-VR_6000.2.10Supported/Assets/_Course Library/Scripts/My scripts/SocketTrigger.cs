@@ -12,43 +12,49 @@ public class SocketTrigger : MonoBehaviour
 
     public RequiredObject requiredObject;
 
+    private bool alreadyPlaced = false;
+
     private void OnTriggerEnter(Collider other)
     {
-        if (puzzleManager == null)
+        if (alreadyPlaced || puzzleManager == null)
         {
             return;
         }
 
-        if (requiredObject == RequiredObject.Racket && other.CompareTag("Racket"))
+        if (requiredObject == RequiredObject.Racket && IsObjectWithTag(other, "Racket"))
         {
+            alreadyPlaced = true;
             puzzleManager.SetRacketPlaced(true);
             Debug.Log("Racket placed correctly.");
         }
 
-        if (requiredObject == RequiredObject.Hat && other.CompareTag("Hat"))
+        if (requiredObject == RequiredObject.Hat && IsObjectWithTag(other, "Hat"))
         {
+            alreadyPlaced = true;
             puzzleManager.SetHatPlaced(true);
             Debug.Log("Hat placed correctly.");
         }
     }
 
-    private void OnTriggerExit(Collider other)
+    private bool IsObjectWithTag(Collider other, string requiredTag)
     {
-        if (puzzleManager == null)
+        if (other.CompareTag(requiredTag))
         {
-            return;
+            return true;
         }
 
-        if (requiredObject == RequiredObject.Racket && other.CompareTag("Racket"))
+        Transform parent = other.transform.parent;
+
+        while (parent != null)
         {
-            puzzleManager.SetRacketPlaced(false);
-            Debug.Log("Racket removed.");
+            if (parent.CompareTag(requiredTag))
+            {
+                return true;
+            }
+
+            parent = parent.parent;
         }
 
-        if (requiredObject == RequiredObject.Hat && other.CompareTag("Hat"))
-        {
-            puzzleManager.SetHatPlaced(false);
-            Debug.Log("Hat removed.");
-        }
+        return false;
     }
 }

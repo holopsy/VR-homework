@@ -6,8 +6,8 @@ public class CoatRackPuzzleManager : MonoBehaviour
     public bool racketPlaced = false;
     public bool hatPlaced = false;
 
-    [Header("Objects To Activate When Solved")]
-    public GameObject tvClueObject;
+    [Header("Solved Result")]
+    public TVController tvController;
     public GameObject successLight;
 
     [Header("Optional Audio")]
@@ -40,9 +40,9 @@ public class CoatRackPuzzleManager : MonoBehaviour
             puzzleSolved = true;
             Debug.Log("Coat rack puzzle solved!");
 
-            if (tvClueObject != null)
+            if (tvController != null)
             {
-                tvClueObject.SetActive(true);
+                tvController.TurnOn();
             }
 
             if (successLight != null)
