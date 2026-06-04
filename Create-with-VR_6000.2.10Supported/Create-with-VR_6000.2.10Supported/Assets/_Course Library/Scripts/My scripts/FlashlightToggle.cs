@@ -4,6 +4,10 @@ public class FlashlightToggle : MonoBehaviour
 {
     public Light flashlightLight;
 
+    [Header("Sound")]
+    public AudioSource audioSource;
+    public AudioClip toggleSound;
+
     private bool isOn = false;
 
     private void Start()
@@ -21,6 +25,11 @@ public class FlashlightToggle : MonoBehaviour
         if (flashlightLight != null)
         {
             flashlightLight.enabled = isOn;
+        }
+
+        if (audioSource != null && toggleSound != null)
+        {
+            audioSource.PlayOneShot(toggleSound);
         }
 
         Debug.Log("Flashlight toggled: " + isOn);
